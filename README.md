@@ -4,7 +4,7 @@ Implements sinkhorn optimal transport algorithms in PyTorch. Currently there are
 
 Example usage:
 ```
-from ot_pytorch import sink
+from ot_pytorch import pairwise_distance_matrix, sink
 
 M = pairwise_distance_matrix()
 dist = sink(M, reg=5, device="cpu")
