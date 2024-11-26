@@ -7,7 +7,7 @@ Example usage:
 from ot_pytorch import pairwise_distance_matrix, sink
 
 M = pairwise_distance_matrix()
-dist = sink(M, reg=5, device="cpu")
+dist = sink(M, reg=5)
 ```
 
 The examples.py file contains two basic examples.
