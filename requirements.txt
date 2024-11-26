@@ -1,5 +1,4 @@
 matplotlib
 numpy
 pandas
-python<=3.12
 torch
