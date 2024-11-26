@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import torch
-from torch.autograd import Variable
 
 from ot_pytorch import dmat, sink, sink_stabilized
 
@@ -17,8 +16,8 @@ def uniform_example(batch_size=100, reg=10, filename="uniform_example1"):
         y[:, 1] = np.random.uniform(0, 1, batch_size)
         y[:, 0] = theta
 
-        x = Variable(torch.from_numpy(x).float())
-        y = Variable(torch.from_numpy(y).float())
+        x = torch.from_numpy(x).float()
+        y = torch.from_numpy(y).float()
 
         M = dmat(x, y)
         loss.append(sink(M, reg=reg).data.numpy())
@@ -46,8 +45,8 @@ def uniform_example_stabilized(batch_size=100, reg=10, filename="uniform_example
         y[:, 1] = np.random.uniform(0, 1, batch_size)
         y[:, 0] = theta
 
-        x = Variable(torch.from_numpy(x).float())
-        y = Variable(torch.from_numpy(y).float())
+        x = torch.from_numpy(x).float()
+        y = torch.from_numpy(y).float()
 
         M = dmat(x, y)
         loss.append(sink_stabilized(M, reg=reg).data.numpy())
@@ -76,8 +75,8 @@ def gaussian_example(batch_size=100, reg=10, dim=10, filename="gaussian_example1
         x = np.random.normal(0, 1, (batch_size, dim))
         y = np.random.normal(mu, 1, (batch_size, dim))
 
-        x = Variable(torch.from_numpy(x).float())
-        y = Variable(torch.from_numpy(y).float())
+        x = torch.from_numpy(x).float()
+        y = torch.from_numpy(y).float()
 
         M = dmat(x, y)
         loss.append(sink(M, reg=reg).data.numpy())
