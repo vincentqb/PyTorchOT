@@ -6,7 +6,7 @@ import torch
 from ot_pytorch import dmat, sink, sink_stabilized
 
 
-def uniform_example(batch_size=100, reg=10, filename="uniform_example1"):
+def uniform_example(batch_size=100, reg=10, filename="uniform_example1", device="cpu"):
     m_list = (np.array(list(range(1, 100))) / 50.0 - 1).tolist()
     loss = []
     for theta in m_list:
@@ -35,7 +35,9 @@ def uniform_example(batch_size=100, reg=10, filename="uniform_example1"):
     df.to_csv(data_name)
 
 
-def uniform_example_stabilized(batch_size=100, reg=10, filename="uniform_example_stabilized1", save_data=False):
+def uniform_example_stabilized(
+    batch_size=100, reg=10, filename="uniform_example_stabilized1", save_data=False, device="cpu"
+):
     m_list = (np.array(list(range(1, 100))) / 50.0 - 1).tolist()
     loss = []
     for theta in m_list:
@@ -68,7 +70,7 @@ def uniform_example_stabilized(batch_size=100, reg=10, filename="uniform_example
         df.to_csv(data_name)
 
 
-def gaussian_example(batch_size=100, reg=10, dim=10, filename="gaussian_example1"):
+def gaussian_example(batch_size=100, reg=10, dim=10, filename="gaussian_example1", device="cpu"):
     m_list = range(21)
     loss = []
     for mu in m_list:

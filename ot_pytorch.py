@@ -1,7 +1,7 @@
 import torch
 
 
-def sink(M, reg, numItermax=1000, stopThr=1e-9, device="cuda"):
+def sink(M, reg, numItermax=1000, stopThr=1e-9, device="cpu"):
     # we assume that no distances are null except those of the diagonal of distances
 
     a = torch.ones((M.size()[0],), requires_grad=True, device=device) / M.size()[0]
@@ -34,7 +34,7 @@ def sink(M, reg, numItermax=1000, stopThr=1e-9, device="cuda"):
     return torch.sum(u.view((-1, 1)) * K * v.view((1, -1)) * M)
 
 
-def sink_stabilized(M, reg, numItermax=1000, tau=1e2, stopThr=1e-9, warmstart=None, print_period=20, device="cuda"):
+def sink_stabilized(M, reg, numItermax=1000, tau=1e2, stopThr=1e-9, warmstart=None, print_period=20, device="cpu"):
     a = torch.ones((M.size()[0],), requires_grad=True, device=device) / M.size()[0]
     b = torch.ones((M.size()[1],), requires_grad=True, device=device) / M.size()[1]
 
