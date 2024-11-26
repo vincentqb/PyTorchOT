@@ -2,8 +2,7 @@ import torch
 from torch.autograd import Variable
 
 
-def sink(M, reg, numItermax=1000, stopThr=1e-9, cuda = True):
-
+def sink(M, reg, numItermax=1000, stopThr=1e-9, cuda=True):
     # we assume that no distances are null except those of the diagonal of
     # distances
 
@@ -33,13 +32,13 @@ def sink(M, reg, numItermax=1000, stopThr=1e-9, cuda = True):
     Kp = (1 / a).view(-1, 1) * K
     cpt = 0
     err = 1
-    while (err > stopThr and cpt < numItermax):
+    while err > stopThr and cpt < numItermax:
         uprev = u
         vprev = v
-        #print(T(K).size(), u.view(u.size()[0],1).size())
+        # print(T(K).size(), u.view(u.size()[0],1).size())
         KtransposeU = K.t().matmul(u)
         v = torch.div(b, KtransposeU)
-        u = 1. / Kp.matmul(v)
+        u = 1.0 / Kp.matmul(v)
 
         if cpt % 10 == 0:
             # we can speed up the process by checking for the error only all
@@ -47,14 +46,12 @@ def sink(M, reg, numItermax=1000, stopThr=1e-9, cuda = True):
             transp = u.view(-1, 1) * (K * v)
             err = (torch.sum(transp) - b).norm(1).pow(2).data[0]
 
-
         cpt += 1
 
     return torch.sum(u.view((-1, 1)) * K * v.view((1, -1)) * M)
 
 
 def sink_stabilized(M, reg, numItermax=1000, tau=1e2, stopThr=1e-9, warmstart=None, print_period=20, cuda=True):
-
     if cuda:
         a = Variable(torch.ones((M.size()[0],)) / M.size()[0]).cuda()
         b = Variable(torch.ones((M.size()[1],)) / M.size()[1]).cuda()
@@ -86,7 +83,11 @@ def sink_stabilized(M, reg, numItermax=1000, tau=1e2, stopThr=1e-9, warmstart=No
         return torch.exp(-(M - alpha.view((na, 1)) - beta.view((1, nb))) / reg)
 
     def get_Gamma(alpha, beta, u, v):
-        return torch.exp(-(M - alpha.view((na, 1)) - beta.view((1, nb))) / reg + torch.log(u.view((na, 1))) + torch.log(v.view((1, nb))))
+        return torch.exp(
+            -(M - alpha.view((na, 1)) - beta.view((1, nb))) / reg
+            + torch.log(u.view((na, 1)))
+            + torch.log(v.view((1, nb)))
+        )
 
     # print(np.min(K))
 
@@ -96,7 +97,6 @@ def sink_stabilized(M, reg, numItermax=1000, tau=1e2, stopThr=1e-9, warmstart=No
     cpt = 0
     err = 1
     while loop:
-
         uprev = u
         vprev = v
 
@@ -125,7 +125,7 @@ def sink_stabilized(M, reg, numItermax=1000, tau=1e2, stopThr=1e-9, warmstart=No
         if cpt >= numItermax:
             loop = False
 
-        #if np.any(np.isnan(u)) or np.any(np.isnan(v)):
+        # if np.any(np.isnan(u)) or np.any(np.isnan(v)):
         #    # we have reached the machine precision
         #    # come back to previous solution and quit loop
         #    print('Warning: numerical errors at iteration', cpt)
@@ -135,9 +135,10 @@ def sink_stabilized(M, reg, numItermax=1000, tau=1e2, stopThr=1e-9, warmstart=No
 
         cpt += 1
 
-    return torch.sum(get_Gamma(alpha, beta, u, v)*M)
+    return torch.sum(get_Gamma(alpha, beta, u, v) * M)
 
-def pairwise_distances(x, y, method='l1'):
+
+def pairwise_distances(x, y, method="l1"):
     n = x.size()[0]
     m = y.size()[0]
     d = x.size()[1]
@@ -145,14 +146,15 @@ def pairwise_distances(x, y, method='l1'):
     x = x.unsqueeze(1).expand(n, m, d)
     y = y.unsqueeze(0).expand(n, m, d)
 
-    if method == 'l1':
+    if method == "l1":
         dist = torch.abs(x - y).sum(2)
     else:
         dist = torch.pow(x - y, 2).sum(2)
 
     return dist.float()
 
-def dmat(x,y):
+
+def dmat(x, y):
     mmp1 = torch.stack([x] * x.size()[0])
     mmp2 = torch.stack([y] * y.size()[0]).transpose(0, 1)
     mm = torch.sum((mmp1 - mmp2) ** 2, 2).squeeze()
