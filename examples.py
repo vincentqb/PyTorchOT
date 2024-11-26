@@ -28,7 +28,7 @@ def uniform_example(batch_size=100, reg=10, filename="uniform_example1", device=
         y = torch.from_numpy(y).float()
 
         M = dmat(x, y)
-        loss.append(sink(M, reg=reg, device=device).data.numpy())
+        loss.append(sink(M, reg=reg).detach().cpu().numpy())
 
     plt.plot(m_list, loss)
     plt.xlabel("Theta")
@@ -59,7 +59,7 @@ def uniform_example_stabilized(
         y = torch.from_numpy(y).float()
 
         M = dmat(x, y)
-        loss.append(sink_stabilized(M, reg=reg, device=device).data.numpy())
+        loss.append(sink_stabilized(M, reg=reg, device=device).detach().cpu().numpy())
 
     plt.plot(m_list, loss)
     plt.xlabel("Theta")
@@ -89,7 +89,7 @@ def gaussian_example(batch_size=100, reg=10, dim=10, filename="gaussian_example1
         y = torch.from_numpy(y).float()
 
         M = dmat(x, y)
-        loss.append(sink(M, reg=reg, device=device).data.numpy())
+        loss.append(sink(M, reg=reg).detach().cpu().numpy())
 
     plt.plot(m_list, loss)
     plt.xlabel("Mu")
@@ -105,6 +105,10 @@ def gaussian_example(batch_size=100, reg=10, dim=10, filename="gaussian_example1
 
 
 if __name__ == "__main__":
-    uniform_example(filename="uniform_example2")
-    gaussian_example(reg=10000, dim=700, filename="gaussian_example3")
-    uniform_example()
+    if torch.cuda.is_available():
+        device = "cuda"
+    else:
+        device = "cpu"
+    uniform_example(filename="uniform_example2", device=device)
+    gaussian_example(reg=10000, dim=700, filename="gaussian_example3", device=device)
+    uniform_example(device=device)

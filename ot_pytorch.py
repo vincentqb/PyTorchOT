@@ -1,18 +1,18 @@
 import torch
 
 
-def sink(M, reg, numItermax=1000, stopThr=1e-9, device="cpu"):
+def sink(M, reg, numItermax=1000, stopThr=1e-9):
     # we assume that no distances are null except those of the diagonal of distances
 
-    a = torch.ones((M.size()[0],), requires_grad=True, device=device) / M.size()[0]
-    b = torch.ones((M.size()[1],), requires_grad=True, device=device) / M.size()[1]
+    a = torch.ones((M.size()[0],), requires_grad=True, device=M.device) / M.size()[0]
+    b = torch.ones((M.size()[1],), requires_grad=True, device=M.device) / M.size()[1]
 
     # init data
     Nini = len(a)
     Nfin = len(b)
 
-    u = torch.ones(Nini, requires_grad=True, device=device) / Nini
-    v = torch.ones(Nfin, requires_grad=True, device=device) / Nfin
+    u = torch.ones(Nini, requires_grad=True, device=M.device) / Nini
+    v = torch.ones(Nfin, requires_grad=True, device=M.device) / Nfin
 
     K = torch.exp(-M / reg)
 
@@ -34,9 +34,9 @@ def sink(M, reg, numItermax=1000, stopThr=1e-9, device="cpu"):
     return torch.sum(u.view((-1, 1)) * K * v.view((1, -1)) * M)
 
 
-def sink_stabilized(M, reg, numItermax=1000, tau=1e2, stopThr=1e-9, warmstart=None, print_period=20, device="cpu"):
-    a = torch.ones((M.size()[0],), requires_grad=True, device=device) / M.size()[0]
-    b = torch.ones((M.size()[1],), requires_grad=True, device=device) / M.size()[1]
+def sink_stabilized(M, reg, numItermax=1000, tau=1e2, stopThr=1e-9, warmstart=None, print_period=20):
+    a = torch.ones((M.size()[0],), requires_grad=True, device=M.device) / M.size()[0]
+    b = torch.ones((M.size()[1],), requires_grad=True, device=M.device) / M.size()[1]
 
     # init data
     na = len(a)
@@ -45,13 +45,13 @@ def sink_stabilized(M, reg, numItermax=1000, tau=1e2, stopThr=1e-9, warmstart=No
     cpt = 0
     # we assume that no distances are null except those of the diagonal of distances
     if warmstart is None:
-        alpha = torch.zeros(na, requires_grad=True, device=device)
-        beta = torch.zeros(nb, requires_grad=True, device=device)
+        alpha = torch.zeros(na, requires_grad=True, device=M.device)
+        beta = torch.zeros(nb, requires_grad=True, device=M.device)
     else:
         alpha, beta = warmstart
 
-    u = torch.ones(na, requires_grad=True, device=device) / na
-    v = torch.ones(nb, requires_grad=True, device=device) / nb
+    u = torch.ones(na, requires_grad=True, device=M.device) / na
+    v = torch.ones(nb, requires_grad=True, device=M.device) / nb
 
     def get_K(alpha, beta):
         return torch.exp(-(M - alpha.view((na, 1)) - beta.view((1, nb))) / reg)
@@ -77,8 +77,8 @@ def sink_stabilized(M, reg, numItermax=1000, tau=1e2, stopThr=1e-9, warmstart=No
         if torch.max(torch.abs(u)).detach().cpu().item() > tau or torch.max(torch.abs(v)).detach().cpu().item() > tau:
             alpha, beta = alpha + reg * torch.log(u), beta + reg * torch.log(v)
 
-            u = torch.ones(na, requires_grad=True, device=device) / na
-            v = torch.ones(nb, requires_grad=True, device=device) / nb
+            u = torch.ones(na, requires_grad=True, device=M.device) / na
+            v = torch.ones(nb, requires_grad=True, device=M.device) / nb
 
             K = get_K(alpha, beta)
 
