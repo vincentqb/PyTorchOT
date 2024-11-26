@@ -1,19 +1,14 @@
 # PyTorchOT
 
-## UPDATE: POT now supports GPU usage, and has way more algorithms implemented! Please use their library instead: https://github.com/rflamary/POT/.
-
-Implements sinkhorn optimal transport algorithms in PyTorch. Currently there are two versions of the Sinkhorn
-algorithm implemented: [the original](https://arxiv.org/pdf/1306.0895.pdf) and the [log-stabilized version](https://arxiv.org/pdf/1610.06519.pdf). This code essentially just reworks a couple of the implementations from the awesome POT library (https://github.com/rflamary/POT/) in PyTorch.
+Implements sinkhorn optimal transport algorithms in PyTorch. Currently there are two versions of the Sinkhorn algorithm implemented: [the original](https://arxiv.org/pdf/1306.0895.pdf) and the [log-stabilized version](https://arxiv.org/pdf/1610.06519.pdf). This code essentially just reworks a couple of the implementations from the awesome POT library (https://github.com/rflamary/POT/) in PyTorch.
 
 Example usage:
 ```
 from ot_pytorch import sink
 
 M = pairwise_distance_matrix()
-dist = sink(M, reg=5, cuda=False)
+dist = sink(M, reg=5, device="cpu")
 ```
-
-Setting cuda=True enables cuda use.
 
 The examples.py file contains two basic examples.
 
