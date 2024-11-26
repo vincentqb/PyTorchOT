@@ -3,8 +3,7 @@ from torch.autograd import Variable
 
 
 def sink(M, reg, numItermax=1000, stopThr=1e-9, cuda=True):
-    # we assume that no distances are null except those of the diagonal of
-    # distances
+    # we assume that no distances are null except those of the diagonal of distances
 
     if cuda:
         a = Variable(torch.ones((M.size()[0],)) / M.size()[0]).cuda()
@@ -24,25 +23,18 @@ def sink(M, reg, numItermax=1000, stopThr=1e-9, cuda=True):
         u = Variable(torch.ones(Nini) / Nini)
         v = Variable(torch.ones(Nfin) / Nfin)
 
-    # print(reg)
-
     K = torch.exp(-M / reg)
-    # print(np.min(K))
 
     Kp = (1 / a).view(-1, 1) * K
     cpt = 0
     err = 1
     while err > stopThr and cpt < numItermax:
-        uprev = u
-        vprev = v
-        # print(T(K).size(), u.view(u.size()[0],1).size())
         KtransposeU = K.t().matmul(u)
         v = torch.div(b, KtransposeU)
         u = 1.0 / Kp.matmul(v)
 
         if cpt % 10 == 0:
-            # we can speed up the process by checking for the error only all
-            # the 10th iterations
+            # we can speed up the process by checking for the error only all the 10th iterations
             transp = u.view(-1, 1) * (K * v)
             err = (torch.sum(transp) - b).norm(1).pow(2).data[0]
 
@@ -64,8 +56,7 @@ def sink_stabilized(M, reg, numItermax=1000, tau=1e2, stopThr=1e-9, warmstart=No
     nb = len(b)
 
     cpt = 0
-    # we assume that no distances are null except those of the diagonal of
-    # distances
+    # we assume that no distances are null except those of the diagonal of distances
     if warmstart is None:
         if cuda:
             alpha, beta = Variable(torch.zeros(na)).cuda(), Variable(torch.zeros(nb)).cuda()
@@ -89,17 +80,12 @@ def sink_stabilized(M, reg, numItermax=1000, tau=1e2, stopThr=1e-9, warmstart=No
             + torch.log(v.view((1, nb)))
         )
 
-    # print(np.min(K))
-
     K = get_K(alpha, beta)
     transp = K
     loop = 1
     cpt = 0
     err = 1
     while loop:
-        uprev = u
-        vprev = v
-
         # sinkhorn update
         v = torch.div(b, (K.t().matmul(u) + 1e-16))
         u = torch.div(a, (K.matmul(v) + 1e-16))
@@ -124,14 +110,6 @@ def sink_stabilized(M, reg, numItermax=1000, tau=1e2, stopThr=1e-9, warmstart=No
 
         if cpt >= numItermax:
             loop = False
-
-        # if np.any(np.isnan(u)) or np.any(np.isnan(v)):
-        #    # we have reached the machine precision
-        #    # come back to previous solution and quit loop
-        #    print('Warning: numerical errors at iteration', cpt)
-        #    u = uprev
-        #    v = vprev
-        #    break
 
         cpt += 1
 
