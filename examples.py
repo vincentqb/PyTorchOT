@@ -1,9 +1,11 @@
-from ot_pytorch import dmat, sink, sink_stabilized
+import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import torch
 from torch.autograd import Variable
-import pandas as pd
-import matplotlib.pyplot as plt
+
+from ot_pytorch import dmat, sink, sink_stabilized
+
 
 def uniform_example(batch_size = 100, reg = 10, filename = 'uniform_example1'):
     m_list = ((np.array(list(range(1, 100))) / 50.0 - 1)).tolist()

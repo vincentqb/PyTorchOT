@@ -1,11 +1,5 @@
 import torch
-import torch.nn as nn
-import torchvision.datasets as dsets
-from torchvision import datasets, transforms
 from torch.autograd import Variable
-from torch.nn import functional as F
-import numpy as np
-import pandas as pd
 
 
 def sink(M, reg, numItermax=1000, stopThr=1e-9, cuda = True):
