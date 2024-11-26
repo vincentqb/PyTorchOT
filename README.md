@@ -1,6 +1,6 @@
 # PyTorchOT
 
-Implements sinkhorn optimal transport algorithms in PyTorch. Currently there are two versions of the Sinkhorn algorithm implemented: [the original](https://arxiv.org/pdf/1306.0895.pdf) and the [log-stabilized version](https://arxiv.org/pdf/1610.06519.pdf). This code essentially just reworks a couple of the implementations from the awesome POT library (https://github.com/rflamary/POT/) in PyTorch.
+Implements sinkhorn optimal transport algorithms in PyTorch. Currently there are two versions of the Sinkhorn algorithm implemented: [the original](https://arxiv.org/pdf/1306.0895.pdf) and the [log-stabilized version](https://arxiv.org/pdf/1610.06519.pdf). This code essentially just reworks a couple of the implementations from the awesome [POT library](https://github.com/rflamary/POT/) in PyTorch.
 
 Example usage:
 ```
