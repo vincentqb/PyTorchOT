@@ -3,7 +3,15 @@ import numpy as np
 import pandas as pd
 import torch
 
-from ot_pytorch import dmat, sink, sink_stabilized
+from ot_pytorch import sink, sink_stabilized
+
+
+def dmat(x, y):
+    mmp1 = torch.stack([x] * x.size()[0])
+    mmp2 = torch.stack([y] * y.size()[0]).transpose(0, 1)
+    mm = torch.sum((mmp1 - mmp2) ** 2, 2).squeeze()
+
+    return mm
 
 
 def uniform_example(batch_size=100, reg=10, filename="uniform_example1", device="cpu"):
@@ -97,6 +105,6 @@ def gaussian_example(batch_size=100, reg=10, dim=10, filename="gaussian_example1
 
 
 if __name__ == "__main__":
-    uniform_example(filename='uniform_example2')
-    gaussian_example(reg = 10000, dim = 700, filename='gaussian_example3')
+    uniform_example(filename="uniform_example2")
+    gaussian_example(reg=10000, dim=700, filename="gaussian_example3")
     uniform_example()

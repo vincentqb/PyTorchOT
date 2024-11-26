@@ -111,11 +111,3 @@ def pairwise_distances(x, y, method="l1"):
         dist = torch.pow(x - y, 2).sum(2)
 
     return dist.float()
-
-
-def dmat(x, y):
-    mmp1 = torch.stack([x] * x.size()[0])
-    mmp2 = torch.stack([y] * y.size()[0]).transpose(0, 1)
-    mm = torch.sum((mmp1 - mmp2) ** 2, 2).squeeze()
-
-    return mm
