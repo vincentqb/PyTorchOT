@@ -28,7 +28,9 @@ def uniform_example(batch_size=100, reg=10, filename="uniform_example1", device=
         y = torch.from_numpy(y).float().to(device)
 
         M = dmat(x, y)
-        loss.append(sink(M, reg=reg).detach().cpu().numpy())
+        out = sink(M, reg=reg)
+        out.backward()
+        loss.append(out.detach().cpu().numpy())
 
     plt.plot(m_list, loss)
     plt.xlabel("Theta")
@@ -59,7 +61,9 @@ def uniform_example_stabilized(
         y = torch.from_numpy(y).float().to(device)
 
         M = dmat(x, y)
-        loss.append(sink_stabilized(M, reg=reg).detach().cpu().numpy())
+        out = sink_stabilized(M, reg=reg)
+        out.backward()
+        loss.append(out.detach().cpu().numpy())
 
     plt.plot(m_list, loss)
     plt.xlabel("Theta")
@@ -89,7 +93,9 @@ def gaussian_example(batch_size=100, reg=10, dim=10, filename="gaussian_example1
         y = torch.from_numpy(y).float().to(device)
 
         M = dmat(x, y)
-        loss.append(sink(M, reg=reg).detach().cpu().numpy())
+        out = sink(M, reg=reg)
+        out.backward()
+        loss.append(out.detach().cpu().numpy())
 
     plt.plot(m_list, loss)
     plt.xlabel("Mu")
