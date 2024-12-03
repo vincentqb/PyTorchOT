@@ -6,7 +6,7 @@ Example usage:
 ```
 from ot_pytorch import pairwise_distance_matrix, sink
 
-M = pairwise_distance_matrix()
+M = pairwise_distance_matrix(x, y)
 dist = sink(M, reg=5)
 ```
 
