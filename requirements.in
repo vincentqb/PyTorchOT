@@ -1,4 +1,4 @@
-matplotlib
-numpy
-pandas
+matplotlib  # needed for example
+numpy  # needed for example
+pandas  # needed for example
 torch
