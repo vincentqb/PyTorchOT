@@ -16,16 +16,16 @@ The examples.py file contains two basic examples.
 
 The algorithm yields:
 
-![alt text](https://github.com/rythei/PyTorchOT/blob/master/plots/uniform_example/uniform_stabilized_example1.png)
+![alt text](https://github.com/vincentqb/PyTorchOT/blob/master/plots/uniform_example/uniform_stabilized_example1.png)
 
 ## Example 2
 
 Let Z<sub>i</sub> ~ Uniform[0,1], and define the data X<sub>i</sub> = (0,Z<sub>i</sub>), Y<sub>i</sub> = (θ, Z<sub>i</sub>), for i=1,...,N and some parameter θ which is varied over [-1,1]. The true optimal transport distance is |θ|. The algorithm yields:
 
-![alt text](https://github.com/rythei/PyTorchOT/blob/master/plots/uniform_example/uniform_example2.png)
+![alt text](https://github.com/vincentqb/PyTorchOT/blob/master/plots/uniform_example/uniform_example2.png)
 
 ## Example 3
 
 The algorithm yields:
 
-![alt text](https://github.com/rythei/PyTorchOT/blob/master/plots/gaussian_example/gaussian_example3.png)
+![alt text](https://github.com/vincentqb/PyTorchOT/blob/master/plots/gaussian_example/gaussian_example3.png)
