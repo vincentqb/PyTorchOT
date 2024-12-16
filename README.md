@@ -16,7 +16,7 @@ The examples.py file contains two basic examples.
 
 The algorithm yields:
 
-![alt text](https://github.com/rythei/PyTorchOT/blob/master/plots/uniform_example/uniform_example_stabilized1.png)
+![alt text](https://github.com/rythei/PyTorchOT/blob/master/plots/uniform_example/uniform_stabilized_example1.png)
 
 ## Example 2
 
