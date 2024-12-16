@@ -49,9 +49,7 @@ def uniform_example(batch_size=100, reg=10, filename="uniform_example1", device=
     df.to_csv(data_name)
 
 
-def uniform_stabilized_example(
-    batch_size=100, reg=10, filename="uniform_stabilized_example1", save_data=False, device="cpu"
-):
+def uniform_stabilized_example(batch_size=100, reg=10, filename="uniform_stabilized_example1", device="cpu"):
     m_list = (np.array(list(range(1, 100))) / 50.0 - 1).tolist()
     loss = []
     for theta in m_list:
@@ -75,17 +73,15 @@ def uniform_stabilized_example(
     plt.title("Uniform Example")
     fig_name = "plots/uniform_example/" + filename + ".png"
 
-    if save_data:
-        Path(fig_name).parent.mkdir(exist_ok=True, parents=True)
-        plt.savefig(fig_name)
+    Path(fig_name).parent.mkdir(exist_ok=True, parents=True)
+    plt.savefig(fig_name)
 
     plt.show()
 
-    if save_data:
-        df = pd.DataFrame({"theta": m_list, "sink_dist": loss})
-        data_name = "data/uniform_example/" + filename + ".csv"
-        Path(data_name).parent.mkdir(exist_ok=True, parents=True)
-        df.to_csv(data_name)
+    df = pd.DataFrame({"theta": m_list, "sink_dist": loss})
+    data_name = "data/uniform_example/" + filename + ".csv"
+    Path(data_name).parent.mkdir(exist_ok=True, parents=True)
+    df.to_csv(data_name)
 
 
 def gaussian_example(batch_size=100, reg=10, dim=10, filename="gaussian_example1", device="cpu"):

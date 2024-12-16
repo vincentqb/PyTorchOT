@@ -28,4 +28,4 @@ Let Z<sub>i</sub> ~ Uniform[0,1], and define the data X<sub>i</sub> = (0,Z<sub>i
 
 The algorithm yields:
 
-![alt text](https://github.com/rythei/PyTorchOT/blob/master/plots/uniform_example_stabilized/gaussian_example3.png)
+![alt text](https://github.com/rythei/PyTorchOT/blob/master/plots/gaussian_example/gaussian_example3.png)
