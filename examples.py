@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -37,16 +39,18 @@ def uniform_example(batch_size=100, reg=10, filename="uniform_example1", device=
     plt.ylabel("Sinkhorn Distance")
     plt.title("Uniform Example")
     fig_name = "plots/uniform_example/" + filename + ".png"
+    Path(fig_name).parent.mkdir(exist_ok=True, parents=True)
     plt.savefig(fig_name)
     plt.show()
 
     df = pd.DataFrame({"theta": m_list, "sink_dist": loss})
     data_name = "data/uniform_example/" + filename + ".csv"
+    Path(data_name).parent.mkdir(exist_ok=True, parents=True)
     df.to_csv(data_name)
 
 
-def uniform_example_stabilized(
-    batch_size=100, reg=10, filename="uniform_example_stabilized1", save_data=False, device="cpu"
+def uniform_stabilized_example(
+    batch_size=100, reg=10, filename="uniform_stabilized_example1", save_data=False, device="cpu"
 ):
     m_list = (np.array(list(range(1, 100))) / 50.0 - 1).tolist()
     loss = []
@@ -72,6 +76,7 @@ def uniform_example_stabilized(
     fig_name = "plots/uniform_example/" + filename + ".png"
 
     if save_data:
+        Path(fig_name).parent.mkdir(exist_ok=True, parents=True)
         plt.savefig(fig_name)
 
     plt.show()
@@ -79,6 +84,7 @@ def uniform_example_stabilized(
     if save_data:
         df = pd.DataFrame({"theta": m_list, "sink_dist": loss})
         data_name = "data/uniform_example/" + filename + ".csv"
+        Path(data_name).parent.mkdir(exist_ok=True, parents=True)
         df.to_csv(data_name)
 
 
@@ -102,11 +108,13 @@ def gaussian_example(batch_size=100, reg=10, dim=10, filename="gaussian_example1
     plt.ylabel("Sinkhorn Distance")
     plt.title("Gaussian Example (Dim = " + str(dim) + ")")
     fig_name = "plots/gaussian_example/" + filename + ".png"
+    Path(fig_name).parent.mkdir(exist_ok=True, parents=True)
     plt.savefig(fig_name)
     plt.show()
 
     df = pd.DataFrame({"mu": m_list, "sink_dist": loss})
     data_name = "data/gaussian_example/" + filename + ".csv"
+    Path(data_name).parent.mkdir(exist_ok=True, parents=True)
     df.to_csv(data_name)
 
 
@@ -115,6 +123,6 @@ if __name__ == "__main__":
         device = "cuda"
     else:
         device = "cpu"
+    uniform_stabilized_example(filename="uniform_stabilized_example1", device=device)
     uniform_example(filename="uniform_example2", device=device)
     gaussian_example(reg=10000, dim=700, filename="gaussian_example3", device=device)
-    uniform_example(device=device)
